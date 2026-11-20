@@ -1,0 +1,73 @@
+<!doctype html>
+<html lang="bn">
+<head>
+<meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover">
+<meta name="theme-color" content="#0b0b0b"><title>SCB Agency</title>
+<link rel="manifest" href="./manifest.webmanifest"><link rel="apple-touch-icon" href="./icons/icon-192.png">
+<style>
+:root{--bg:#0b0b0b;--panel:#161616;--surface:#222;--gold:#d4af37;--muted:#aaa;--white:#fff}
+*{box-sizing:border-box}body{margin:0;background:var(--bg);color:var(--white);font:15px system-ui,"Noto Sans Bengali",sans-serif}
+header{padding:19px 17px;background:#111;border-bottom:1px solid #292929;position:sticky;top:0;z-index:3}
+.brand{font-size:11px;letter-spacing:2px;color:var(--gold);font-weight:800}.headrow{display:flex;align-items:center;justify-content:space-between}.headrow h1{font-size:24px;margin:4px 0}.tag{font-size:12px;color:var(--muted)}
+main{max-width:720px;margin:auto;padding:15px 13px 90px}.tabs{display:flex;gap:8px;overflow:auto;margin-bottom:14px}.tabs button{white-space:nowrap;background:#181818;border:1px solid #333;color:white;border-radius:20px;padding:9px 14px}.tabs button.active{border-color:var(--gold);color:var(--gold)}
+.card{background:var(--panel);border:1px solid #2c2c2c;border-radius:15px;padding:14px;margin-bottom:12px}
+h2{font-size:18px;margin:5px 0 12px}.muted{color:var(--muted);font-size:12px}
+input,textarea,select{width:100%;background:#0d0d0d;color:white;border:1px solid #393939;border-radius:9px;padding:11px;margin:5px 0;font:inherit}
+textarea{min-height:82px;resize:vertical}.btn{background:var(--gold);color:#111;border:0;border-radius:9px;padding:11px 15px;font-weight:800}.btn2{background:#242424;color:white;border:1px solid #444;border-radius:9px;padding:9px 12px}
+.actions{display:flex;gap:8px;flex-wrap:wrap;margin-top:10px}.post{border-bottom:1px solid #333;padding:12px 0}.post:last-child{border:0}.posthead{display:flex;justify-content:space-between;gap:8px}.author{font-weight:700;color:var(--gold)}.postbody{white-space:pre-wrap;overflow-wrap:anywhere;margin:9px 0;line-height:1.5}.comment{margin:8px 0 0 12px;padding-left:10px;border-left:2px solid #555;font-size:13px}.view{display:none}.view.active{display:block}
+.nav{position:fixed;bottom:0;left:0;right:0;display:flex;background:#101010;border-top:1px solid #333;padding:7px 4px calc(7px + env(safe-area-inset-bottom));z-index:4}.nav button{flex:1;background:none;border:0;color:#bbb;font:11px inherit;padding:6px}.nav b{display:block;font-size:19px;font-weight:400}.nav button.active{color:var(--gold)}
+.member{display:flex;align-items:center;justify-content:space-between;padding:10px 0;border-bottom:1px solid #333}.avatar{width:36px;height:36px;border-radius:50%;display:grid;place-items:center;background:#29251a;color:var(--gold);font-weight:800;margin-right:10px}.memberleft{display:flex;align-items:center}.notice{background:#211d10;border:1px solid #5a4a1b;border-radius:10px;padding:11px;color:#e8d99f;font-size:12px;line-height:1.5}
+</style></head><body>
+<header><div class="brand">PRIVATE COMMUNITY</div><div class="headrow"><h1>SCB Agency</h1><span class="tag">Private space</span></div><div class="tag">তোমার নির্বাচিত মানুষদের নিজস্ব কমিউনিটি</div></header>
+<main>
+<div class="tabs">
+<button class="active" data-tab="feed" onclick="show('feed',this)">ফিড</button>
+<button data-tab="members" onclick="show('members',this)">সদস্য</button>
+<button data-tab="announcements" onclick="show('announcements',this)">ঘোষণা</button>
+<button data-tab="settings" onclick="show('settings',this)">সেটিংস</button>
+</div>
+<section id="feed" class="view active">
+<div class="card"><h2>নতুন পোস্ট</h2><textarea id="postText" placeholder="কমিউনিটির সঙ্গে কিছু শেয়ার করো..."></textarea><div class="actions"><button class="btn" onclick="addPost()">পোস্ট প্রকাশ</button></div></div>
+<div class="card"><h2>কমিউনিটি ফিড</h2><div id="feedList"></div></div>
+</section>
+<section id="members" class="view">
+<div class="card"><h2>সদস্য ব্যবস্থাপনা</h2><p class="muted">প্রাথমিক ডেমোতে সদস্য তালিকা এই ডিভাইসেই থাকে।</p><input id="memberName" placeholder="সদস্যের নাম"><input id="memberContact" placeholder="ইমেইল বা পরিচিতি (ঐচ্ছিক)"><button class="btn" onclick="addMember()">সদস্য যোগ</button><div id="memberList"></div></div>
+<div class="notice">বাস্তব আমন্ত্রণ, লগইন ও সদস্যদের আলাদা ডিভাইসে যুক্ত করতে নিরাপদ সার্ভার ও অথেনটিকেশন যুক্ত করতে হবে।</div>
+</section>
+<section id="announcements" class="view">
+<div class="card"><h2>কমিউনিটি ঘোষণা</h2><textarea id="announceText" placeholder="গুরুত্বপূর্ণ ঘোষণা লিখো..."></textarea><button class="btn" onclick="addAnnouncement()">ঘোষণা প্রকাশ</button><div id="announceList"></div></div>
+</section>
+<section id="settings" class="view">
+<div class="card"><h2>কমিউনিটি সেটিংস</h2><label class="muted">কমিউনিটির নাম</label><input id="communityName" value="SCB Agency"><label class="muted">কমিউনিটির পরিচিতি</label><textarea id="communityDesc">শুধু আমন্ত্রিত ও নির্বাচিত সদস্যদের জন্য ব্যক্তিগত কমিউনিটি।</textarea><button class="btn" onclick="saveSettings()">সেটিংস সংরক্ষণ</button></div>
+<div class="card"><h2>ডেটা ব্যাকআপ</h2><div class="actions"><button class="btn2" onclick="backup()">Backup Export</button><button class="btn2" onclick="document.getElementById('restore').click()">Backup Import</button><input id="restore" type="file" accept="application/json" hidden onchange="restore(event)"></div></div>
+<div class="notice">গুরুত্বপূর্ণ: এটি এখন একটি স্থানীয় প্রোটোটাইপ। পোস্ট/সদস্য/ঘোষণা এই ব্রাউজারে সংরক্ষিত হয়, অন্য কারও ফোনে স্বয়ংক্রিয়ভাবে যায় না। Public launch বা প্রকৃত private community চালুর আগে login, invite approval, database rules এবং secure access যুক্ত করা জরুরি।</div>
+</section>
+</main>
+<nav class="nav">
+<button class="active" onclick="show('feed',document.querySelector('[data-tab=feed]'))"><b>⌂</b>ফিড</button>
+<button onclick="show('members',document.querySelector('[data-tab=members]'))"><b>♙</b>সদস্য</button>
+<button onclick="show('announcements',document.querySelector('[data-tab=announcements]'))"><b>▣</b>ঘোষণা</button>
+<button onclick="show('settings',document.querySelector('[data-tab=settings]'))"><b>⚙</b>সেটিংস</button>
+</nav>
+<script>
+const KEY='scb_agency_v1';let data={posts:[],members:[{id:1,name:'Sohan Chowdhury',contact:'Admin',role:'Admin'}],announcements:[],settings:{name:'SCB Agency',desc:'শুধু আমন্ত্রিত ও নির্বাচিত সদস্যদের জন্য ব্যক্তিগত কমিউনিটি।'}};
+try{const old=JSON.parse(localStorage.getItem(KEY)||'null');if(old)data={...data,...old}}catch(e){}
+const $=id=>document.getElementById(id);function save(){localStorage.setItem(KEY,JSON.stringify(data));render()}
+function esc(s){return String(s).replace(/[&<>"']/g,c=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[c]))}
+function show(id,btn){document.querySelectorAll('.view').forEach(x=>x.classList.toggle('active',x.id===id));document.querySelectorAll('.tabs button,.nav button').forEach(x=>x.classList.remove('active'));if(btn)btn.classList.add('active')}
+function addPost(){let t=$('postText').value.trim();if(!t)return;data.posts.unshift({id:Date.now(),text:t,date:new Date().toLocaleString('bn-BD'),comments:[]});$('postText').value='';save()}
+function comment(id){let el=$('comment'+id),v=el.value.trim();if(!v)return;let p=data.posts.find(x=>x.id===id);p.comments.push({text:v,date:new Date().toLocaleString('bn-BD')});save()}
+function addMember(){let n=$('memberName').value.trim();if(!n)return;data.members.push({id:Date.now(),name:n,contact:$('memberContact').value.trim(),role:'সদস্য'});$('memberName').value='';$('memberContact').value='';save()}
+function removeMember(id){if(id===1)return;data.members=data.members.filter(x=>x.id!==id);save()}
+function addAnnouncement(){let t=$('announceText').value.trim();if(!t)return;data.announcements.unshift({id:Date.now(),text:t,date:new Date().toLocaleString('bn-BD')});$('announceText').value='';save()}
+function saveSettings(){data.settings={name:$('communityName').value.trim()||'SCB Agency',desc:$('communityDesc').value.trim()};save();alert('সেটিংস সংরক্ষিত হয়েছে')}
+function backup(){let a=document.createElement('a'),u=URL.createObjectURL(new Blob([JSON.stringify(data,null,2)],{type:'application/json'}));a.href=u;a.download='scb-agency-backup.json';a.click();URL.revokeObjectURL(u)}
+function restore(e){let f=e.target.files[0];if(!f)return;let r=new FileReader();r.onload=()=>{try{let x=JSON.parse(r.result);if(!Array.isArray(x.posts)||!Array.isArray(x.members)||!Array.isArray(x.announcements))throw 0;if(confirm('বর্তমান ডেটা প্রতিস্থাপন করবে?')){data=x;save()}}catch(_){alert('সঠিক backup ফাইল নয়')}e.target.value=''};r.readAsText(f)}
+function render(){
+$('feedList').innerHTML=data.posts.length?data.posts.map(p=>`<div class="post"><div class="posthead"><span class="author">Sohan Chowdhury</span><span class="muted">${esc(p.date)}</span></div><div class="postbody">${esc(p.text)}</div><div class="muted">${p.comments.length} মন্তব্য</div>${p.comments.map(c=>`<div class="comment">${esc(c.text)}<div class="muted">${esc(c.date)}</div></div>`).join('')}<div class="actions"><input id="comment${p.id}" placeholder="মন্তব্য লিখো"><button class="btn2" onclick="comment(${p.id})">পাঠাও</button></div></div>`).join(''):'<p class="muted">এখনো কোনো পোস্ট নেই। প্রথম পোস্টটি তুমি করো।</p>';
+$('memberList').innerHTML=data.members.map(m=>`<div class="member"><div class="memberleft"><div class="avatar">${esc(m.name.slice(0,1))}</div><div><b>${esc(m.name)}</b><div class="muted">${esc(m.contact||m.role)} · ${esc(m.role)}</div></div></div>${m.id!==1?`<button class="btn2" onclick="removeMember(${m.id})">বাদ</button>`:'<span class="muted">Admin</span>'}</div>`).join('');
+$('announceList').innerHTML=data.announcements.length?data.announcements.map(a=>`<div class="post"><b>${esc(a.text)}</b><div class="muted">${esc(a.date)}</div></div>`).join(''):'<p class="muted">এখনো কোনো ঘোষণা নেই।</p>';
+$('communityName').value=data.settings.name;$('communityDesc').value=data.settings.desc;
+}
+render();if('serviceWorker'in navigator)addEventListener('load',()=>navigator.serviceWorker.register('./sw.js').catch(()=>{}));
+</script></body></html>
